@@ -1,4 +1,4 @@
-# Testes por Camadas
+# Layered Testing Skill
 
 A reusable Codex skill for **spec-led test planning, implementation, and execution feedback**. It maps business rules to the lowest test layer that gives a reliable signal, then records what was actually verified.
 
@@ -28,10 +28,10 @@ flowchart LR
 Clone the repository into your user skills directory:
 
 ```bash
-git clone https://github.com/ssavioRosa/testes-por-camadas.git ~/.codex/skills/testes-por-camadas
+git clone https://github.com/ssavioRosa/layered-testing-skill.git ~/.codex/skills/testes-por-camadas
 ```
 
-Or download the versioned ZIP from [Releases](https://github.com/ssavioRosa/testes-por-camadas/releases) and extract the `testes-por-camadas` folder into your skills directory. The folder must contain `SKILL.md` at its root. You can then ask Codex to use `$testes-por-camadas` in a repository with business specifications.
+Or download the versioned ZIP from [Releases](https://github.com/ssavioRosa/layered-testing-skill/releases) and extract the `testes-por-camadas` folder into your skills directory. The folder must contain `SKILL.md` at its root. You can then ask Codex to use `$testes-por-camadas` in a repository with business specifications.
 
 ## Example request
 
