@@ -4,7 +4,7 @@ Leia este guia quando o fluxo tiver múltiplas decisões ou fronteiras, ou quand
 
 ## 1. Construa o modelo do fluxo
 
-Comece pela jornada descrita nas specs, mas não assuma que ela precise ser testada inteira pelo navegador. Faça um grafo com entradas, estados, decisões e efeitos observáveis. Para cada aresta, localize a função, componente, endpoint, consumidor, persistência ou integração responsável. Associe cada regra à seção exata da spec. Uma regra inferida apenas do código é uma dúvida a esclarecer, não uma obrigação de negócio mapeada.
+Comece pela jornada descrita nas specs, mas não assuma que ela precise ser testada inteira pelo navegador. Faça um grafo com entradas, estados, decisões e efeitos observáveis. Para cada aresta, localize a função, componente, endpoint, consumidor, persistência ou integração responsável. Associe cada regra de negócio à seção exata da spec e cada garantia técnica ao contrato ou requisito de qualidade correspondente. Uma regra inferida apenas do código é uma dúvida a esclarecer, não uma obrigação aprovada.
 
 Particione variações por classe de equivalência, valores de fronteira e transições de estado. Inclua, quando cabível, autorização por papel, campos ausentes/nulos/inválidos, duplicidade, concorrência, idempotência, falha de dependência, timeout, retry e consistência assíncrona. Escolha apenas classes que alterem uma decisão ou risco real do fluxo.
 
@@ -32,9 +32,9 @@ Exemplo agnóstico: numa importação com dezenas de combinações de arquivo e 
 
 Cada linha deve conter:
 
-`ID | seção da spec | regra/variante | risco | fronteira | teste e oráculo | camada | implementação | lacuna/risco residual`
+`ID | tipo e âncora da fonte | obrigação/variante | risco | fronteira | teste e oráculo | camada | implementação | lacuna/risco residual`
 
-No mapa, diferencie **planejado** e **implementado**. No relatório de cada rodada, diferencie **passou**, **falhou**, **pulou**, **bloqueado** e **não executado**. “Cobertura de requisitos” significa a fração das regras e variantes da spec com evidência adequada; registre o denominador e as exclusões. Não equipare esse número a ausência de defeitos. Quando uma regra estiver ambígua, refine a spec antes de declarar a cobertura completa.
+No mapa, separe regras de negócio de garantias técnicas, e diferencie **planejado** e **implementado**. No relatório de cada rodada, diferencie **passou**, **falhou**, **pulou**, **bloqueado** e **não executado**. “Cobertura de regras de negócio” significa a fração das regras e variantes da spec com evidência adequada; “cobertura técnica” mede as obrigações inventariadas de contratos e qualidade. Registre denominadores e exclusões. Não equipare esses números a ausência de defeitos. Quando uma expectativa estiver ambígua, refine sua fonte antes de declarar cobertura completa.
 
 ## 5. Avalie a força e o custo da suíte
 

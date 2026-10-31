@@ -6,9 +6,9 @@ Leia quando a aplicação tiver requisitos de desempenho, riscos de falha ou reg
 
 Execute a suíte relevante três vezes após a implementação, em condições equivalentes: mesma revisão do código, configuração, massa de dados e serviços sob controle. Isole estado e limpe resíduos entre rodadas. Registre comando, status e duração de cada uma. Compare IDs e falhas, não apenas a contagem global. Se um teste alternar entre passar e falhar, investigue ordem, concorrência, relógio, rede, dados compartilhados e esperas; reruns verdes não apagam a falha anterior. Três rodadas fornecem evidência de repetibilidade, sem provar ausência de flaky tests.
 
-## Robustez baseada na spec
+## Robustez baseada nas fontes do sistema
 
-Derive casos de limites, entradas inválidas, autorização, duplicidade, conflito, timeout, indisponibilidade, retry, idempotência, concorrência, consistência e recuperação apenas quando a spec definir a resposta esperada. Use injeção de falhas controlada na menor camada que observa o comportamento. Para comportamento desejável sem regra especificada, meça ou proponha refinamento; não invente uma regra no mapa de rastreabilidade.
+Derive casos de limites, entradas inválidas, autorização, duplicidade, conflito, timeout, indisponibilidade, retry, idempotência, concorrência, consistência e recuperação das specs, schemas, contratos, protocolos e requisitos de qualidade aplicáveis. Para endpoints e outras entradas não confiáveis, siga [contratos e robustez](contratos-e-robustez.md): inventarie a fronteira real, escolha classes de entrada por risco, explicite o oráculo e teste a ligação do validador à rota. Use injeção de falhas controlada na menor camada que observa o comportamento. Para comportamento desejável sem resultado especificado, registre uma investigação ou proponha refinamento; não invente uma regra de negócio no mapa.
 
 ## Performance da suíte e da aplicação
 

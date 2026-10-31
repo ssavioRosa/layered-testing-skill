@@ -1,0 +1,30 @@
+# Contratos e robustez da aplicação
+
+Leia quando o alvo for um endpoint, evento, arquivo, comando ou outra fronteira que recebe dados não confiáveis. O mapeamento técnico complementa o de negócio: uma spec define o que o usuário deve conseguir fazer; um contrato ou requisito de qualidade define formatos, limites, falhas e garantias operacionais. Não atribua ao negócio uma obrigação encontrada apenas no schema ou no protocolo.
+
+## Faça o inventário da fronteira real
+
+Para cada operação no escopo, localize rota/tópico/comando, método, schema de entrada e saída, autenticação e autorização, parser, validação em runtime, handler, serviços, persistência e chamadas externas. Liste campos obrigatórios e opcionais, diferença entre ausente e `null`, tipo, formato, enum, limites numéricos e de tamanho, itens de arrays, objetos aninhados, defaults, campos desconhecidos, cabeçalhos e content types. Localize também respostas de sucesso e erro, efeitos colaterais, transações e estado após falha. Faça um inventário `operação → campo/variante de resposta → restrição → classes de entrada/saída → teste ou lacuna` para não perder partes do contrato. Registre a origem de cada expectativa: seção da spec, schema/contrato versionado, protocolo, requisito de qualidade aprovado. A implementação serve para descobrir a superfície e possíveis defeitos; não para declarar o resultado correto.
+
+## Selecione casos por risco e classe de entrada
+
+- **Caminho válido:** um exemplo representativo por resultado ou transição material, incluindo resposta e efeitos persistidos/eventos quando houver.
+- **Fronteiras e equivalências:** mínimo, máximo, logo abaixo/acima, zero, negativo, precisão e overflow quando aplicáveis; string vazia, Unicode, comprimento excessivo, arrays vazios ou enormes, item inválido e objeto aninhado profundo. Não crie produto cartesiano de todos os campos sem risco que o justifique.
+- **Entradas inconsistentes:** campo ausente, `null`, tipo trocado, enum/formatos inválidos, campos contraditórios, propriedades extras, JSON malformado, content type incorreto e valores aleatórios dentro e fora do schema. Separe validação sintática da semântica do domínio. Consulte o [guia de validação de entrada da OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) para classes de falha, sem copiá-lo como requisito da aplicação.
+- **Saídas e efeitos:** status, headers, shape e semântica de cada variante de resposta, inclusive erro; ausência de campos internos ou sensíveis, persistência e eventos esperados, e ausência de efeitos em pedidos rejeitados.
+- **Estado e falhas:** identidade sem permissão, ID de outro usuário, duplicidade, retry, concorrência, timeout, dependência indisponível, falha parcial e recuperação onde a operação e os riscos tornarem isso relevante. Verifique que falhas não deixam efeitos indevidos. Considere acesso por objeto/propriedade e consumo de recursos quando a API expõe esses riscos, conforme o [OWASP API Security Top 10](https://api-security.owasp.org/editions/2023/en/0x11-t10/).
+- **Escala e desempenho:** tamanho de payload, taxa, concorrência, latência e uso de recursos apenas no perfil suportado pela aplicação e com ambiente controlado. Limites de aceitação numéricos exigem requisito identificado; sem ele, registre linha de base e risco.
+
+Use geração baseada em propriedades ou fuzzing dirigido quando o espaço de entradas for amplo. Gere casos válidos e inválidos com estratégia consciente do schema; fixe ou registre a semente, preserve o menor exemplo que falhou e execute a descoberta em ambiente isolado com orçamento definido. Converta descobertas importantes em regressões determinísticas. Geração aleatória sem oráculo, semente e limite de execução não demonstra robustez. Não envie payloads extremos a produção ou a ambientes compartilhados sem autorização apropriada.
+
+## Defina um oráculo independente
+
+Para cada caso, escreva antes da implementação do teste: **fonte → entrada/estado → resposta esperada → efeitos que devem ou não ocorrer**. Se o contrato especifica o status e o corpo, afirme ambos. Se define apenas a forma aceita, afirme a rejeição de entradas fora dela e ausência de gravação ou evento indevido; não invente um código HTTP exato. Para entradas malformadas, verifique tratamento controlado, ausência de vazamento de dados sensíveis e integridade do estado, sem transformar um comportamento desejável não aprovado em regra de negócio. Se nem a aceitação nem a rejeição puderem ser deduzidas, registre pergunta de refinamento e mantenha o caso como candidato, fora da contagem de cobertura verificada.
+
+Em operações autorizadas, confira o resultado para identidades e objetos diferentes; um identificador com formato válido não prova direito de acesso. Em falhas, valide atomicidade, idempotência ou recuperação somente quando a arquitetura ou contrato assumir essa garantia. Nunca derive o esperado copiando o retorno atual do handler para o teste.
+
+## Distribua pelas camadas e verifique a ligação
+
+Teste a maior variedade de combinações no validador/domínio, com execução rápida. Use integração da API ou do consumidor para provar que o parser, middleware, autenticação, schema efetivamente aplicado, serviço e persistência se conectam; um teste direto do validador não prova que a rota o chama. Use contrato para compatibilidade entre produtor e consumidor. Reserve uma jornada ponta a ponta representativa para a ligação implantada quando o risco pedir. Meça separadamente cobertura de **obrigações técnicas inventariadas**, cobertura de **regras de negócio** e resultados observados; não some denominadores diferentes em um percentual sem explicar o significado.
+
+No mapa em inglês, use IDs como `TECH-API-001` e `CASE-API-001-01`, marcados como **Technical assurance**, com fonte, risco, classe de entrada, oráculo, camada, teste e lacuna. Regras de negócio continuam em seção própria. Se o schema está ausente, incompleto ou contradiz a spec, registre o conflito e proponha refinamento; não transforme uma observação da implementação em contrato aprovado.

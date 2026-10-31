@@ -6,6 +6,7 @@
 | --- | --- |
 | Business capability | [Name] |
 | Specification revision | [Revision/link] |
+| Technical contract revision | [Schema/API/event contract revision/link, or none] |
 | Code revision | [Commit/version] |
 | Environment | [Controlled environment and relevant configuration] |
 | Test stack | [Tools and versions] |
@@ -26,11 +27,17 @@
 | --- | --- | --- | --- | --- |
 | [Count] | [Count] | [Count] | [Count] | [Rule IDs] |
 
+## Technical assurance coverage
+
+| Contract obligations | Mapped | Implemented | Verified in all required runs | Gaps |
+| --- | --- | --- | --- | --- |
+| [Count] | [Count] | [Count] | [Count] | [Technical obligation IDs] |
+
 ## Scenario results
 
-| Scenario ID | Layer | Run 1 | Run 2 | Run 3 | Duration by run | Evidence | Finding and next action |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| [CASE-ID] | [Layer] | [Pass/fail/skipped/blocked/not run] | [Status] | [Status] | [Durations] | [Link] | [Observed failure or none] |
+| Scenario ID | Obligation type | Layer | Run 1 | Run 2 | Run 3 | Duration by run | Evidence | Finding and next action |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [CASE-ID] | [Business rule / Technical assurance] | [Layer] | [Pass/fail/skipped/blocked/not run] | [Status] | [Status] | [Durations] | [Link] | [Observed failure or none] |
 
 ## Performance and robustness
 
