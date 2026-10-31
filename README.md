@@ -1,6 +1,6 @@
 # Layered Testing Skill
 
-A reusable Codex skill for **spec-led test planning, implementation, and execution feedback**. It maps business rules to the lowest test layer that gives a reliable signal, then records what was actually verified.
+A reusable Agent Skill for **Codex and Claude** focused on spec-led test planning, implementation, and execution feedback. It maps business rules to the lowest test layer that gives a reliable signal, then records what was actually verified.
 
 Uma skill para mapear regras de negócio a partir das specs, escolher a stack de testes conforme a aplicação e criar uma suíte rápida com rastreabilidade legível em inglês.
 
@@ -23,7 +23,7 @@ flowchart LR
   E --> F
 ```
 
-## Install in Codex
+## Install and use in Codex
 
 Clone the repository into your user skills directory:
 
@@ -31,11 +31,39 @@ Clone the repository into your user skills directory:
 git clone https://github.com/ssavioRosa/layered-testing-skill.git ~/.codex/skills/testes-por-camadas
 ```
 
-Or download the versioned ZIP from [Releases](https://github.com/ssavioRosa/layered-testing-skill/releases) and extract the `testes-por-camadas` folder into your skills directory. The folder must contain `SKILL.md` at its root. You can then ask Codex to use `$testes-por-camadas` in a repository with business specifications.
+Or download the versioned ZIP from [Releases](https://github.com/ssavioRosa/layered-testing-skill/releases) and extract the `testes-por-camadas` folder into your skills directory. The folder must contain `SKILL.md` at its root. In a repository with business specifications, invoke `$testes-por-camadas` and describe the flow to test.
 
-## Example request
+## Install and use in Claude Code
+
+For a personal skill available in all local Claude Code projects, clone this repository into Claude Code's personal skills directory:
+
+```bash
+git clone https://github.com/ssavioRosa/layered-testing-skill.git ~/.claude/skills/testes-por-camadas
+```
+
+Open Claude Code in the application repository and invoke the skill with `/testes-por-camadas`, followed by the task. Claude can also load it automatically when a request matches its description. To share the skill only within one application repository, place the extracted `testes-por-camadas` folder at `.claude/skills/testes-por-camadas/` and commit it there. The [`SKILL.md` format and these locations](https://code.claude.com/docs/en/skills) are supported by Claude Code.
+
+## Install and use in Claude chat or Cowork
+
+1. Download the latest `layered-testing-skill-v*.zip` from [Releases](https://github.com/ssavioRosa/layered-testing-skill/releases). Keep the ZIP intact; it contains the `testes-por-camadas` skill folder.
+2. In Claude, enable **Code execution and file creation** (the newer settings may call this **Create and edit files**). Open **Customize > Skills** and choose **+ > Create skill > Upload a skill**. In the newer interface, **Customize** may appear as **Plugins**. Upload the ZIP and enable the skill.
+3. Attach or provide access to the application repository and its business specifications. Ask Claude to use the `testes-por-camadas` skill for a specific flow, with the request shown below.
+
+See Anthropic's [skill upload guide](https://support.claude.com/en/articles/12512180-use-skills-in-claude) and [interface rollout note](https://support.claude.com/en/articles/17740565-manage-plugins-skills-and-connectors-from-one-plugins-page). Claude chat and Cowork use the uploaded skill; local folders under `~/.claude/skills/` are for local Claude Code sessions and are [not read by cloud sessions](https://code.claude.com/docs/en/skills).
+
+## Example requests
+
+Codex:
 
 > Use `$testes-por-camadas` to map and implement tests for the checkout flow in `specs/checkout.md`. Choose the test tools from this repository, generate English business traceability, run the relevant suite three times, and report mutation, robustness, performance, and remaining gaps.
+
+Claude Code:
+
+> `/testes-por-camadas` Map and implement tests for the checkout flow in `specs/checkout.md`. Generate English business traceability, run the relevant suite three times, and report mutation, robustness, performance, and remaining gaps.
+
+Claude chat or Cowork:
+
+> Use the `testes-por-camadas` skill to map and implement tests for the checkout flow in `specs/checkout.md`. Use the specification as the source of truth, generate English business traceability, run the relevant suite three times, and report mutation, robustness, performance, and remaining gaps.
 
 ## Files
 
